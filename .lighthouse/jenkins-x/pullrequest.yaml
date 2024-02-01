@@ -27,6 +27,23 @@ spec:
             requests:
               cpu: 400m
               memory: 600Mi
+        - image: ghcr.io/jenkins-x/jx-boot:3.2.188
+          name: add-new-var
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            echo Newly added step
+            echo export MYVAR='foo' >> .jx/variables.sh
+            cat .jx/variables.sh
+        - image: ghcr.io/jenkins-x/jx-boot:3.2.188
+          name: access-new-var
+          resources: {}
+          script: |
+            #!/usr/bin/env sh
+            echo newly added step
+            source .jx/variables.sh
+            cat .jx/variables.sh
+            echo ${MYVAR}
         - name: build-make-linux
           resources: {}
         - name: check-registry
